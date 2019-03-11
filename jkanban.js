@@ -311,6 +311,25 @@ var dragula = require('dragula');
             return (board.childNodes);
         };
 
+        this.getParentBoardID = function (el) {
+            if (typeof (el) === 'string') {
+                el = self.element.querySelector('[data-eid="' + el + '"]');
+            }
+            if (el === null) {
+                return null;
+            }
+            return el.parentNode.parentNode.dataset.id;
+        };
+
+        this.moveElement = function (targetBoardID, elementID, element) {
+            if (targetBoardID === this.getParentBoardID(elementID)) {
+                return;
+            }
+
+            this.removeElement(elementID);
+            return this.addElement(targetBoardID, element);
+        };
+
         this.removeElement = function (el) {
             if (typeof(el) === 'string') {
                 el = self.element.querySelector('[data-eid="' + el + '"]');
@@ -331,23 +350,20 @@ var dragula = require('dragula');
             return self;
         };
 
-        this.getBoardID = function (el) {
-            if (typeof (el) === 'string') {
-                el = self.element.querySelector('[data-eid="' + el + '"]');
-            }
-            if (el === null) {
-                return null;
-            }
-            return el.parentNode.parentNode.dataset.id;
-        };
-
-        this.moveElement = function (targetBoardID, elementID, element) {
-            if (targetBoardID === this.getBoardID(elementID)) {
-                return;
+        this.replaceElement = function (el, element) {
+            var nodeItem = el;
+            if (typeof(nodeItem) === 'string') {
+                nodeItem = self.element.querySelector('[data-eid="' + el + '"]');
             }
 
-            this.removeElement(elementID);
-            this.addElement(targetBoardID, element);
+            nodeItem.innerHTML = element.title;
+            // add function
+            nodeItem.clickfn = element.click;
+            nodeItem.dragfn = element.drag;
+            nodeItem.dragendfn = element.dragend;
+            nodeItem.dropfn = element.drop;
+            __appendCustomProperties(nodeItem, element);
+            return self;
         };
 
         // board button on click function
@@ -375,7 +391,7 @@ var dragula = require('dragula');
             self.addBoards(self.options.boards, true);
             // appends to container
             self.element.appendChild(self.container);
-        };
+        }
 
         function __onclickHandler(nodeItem) {
             nodeItem.addEventListener('click', function (e) {
