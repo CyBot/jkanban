@@ -98,7 +98,7 @@ var dragula = require('dragula');
                     });
 
                 // Init Drag Item
-                self.drake = self.dragula(self.boardContainer, function () {
+                self.drake = self.dragula(self.boardContainer, {
                     revertOnSpill: true
                 })
                     .on('cancel', function(el, container, source) {
