@@ -189,7 +189,7 @@ var dragula = require('dragula');
             return self;
         };
 
-        this.addBoards = function (boards) {
+        this.addBoards = function (boards, isInit) {
             if (self.options.responsivePercentage) {
                 self.container.style.width = '100%';
                 self.options.gutter = '1%';
@@ -208,7 +208,9 @@ var dragula = require('dragula');
             for (var boardkey in boards) {
                 // single board
                 var board = boards[boardkey];
-                self.options.boards.push(board);
+                if (!isInit) {
+                    self.options.boards.push(board);
+                }
 
                 if (!self.options.responsivePercentage) {
                     // add width to container
@@ -352,7 +354,7 @@ var dragula = require('dragula');
             boardContainer.classList.add('kanban-container');
             self.container = boardContainer;
             // add boards
-            self.addBoards(self.options.boards);
+            self.addBoards(self.options.boards, true);
             // appends to container
             self.element.appendChild(self.container);
         };
