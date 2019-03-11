@@ -332,6 +332,25 @@ var dragula = require('dragula');
             return self;
         };
 
+        this.getBoardID = function (el) {
+            if (typeof (el) === 'string') {
+                el = self.element.querySelector('[data-eid="' + el + '"]');
+            }
+            if (el === null) {
+                return null;
+            }
+            return el.parentNode.parentNode.dataset.id;
+        };
+
+        this.moveElement = function (targetBoardID, elementID, element) {
+            if (targetBoardID === this.getBoardID(elementID)) {
+                return;
+            }
+
+            this.removeElement(elementID);
+            this.addElement(targetBoardID, element);
+        };
+
         // board button on click function
         this.onButtonClick = function (el) {
         };
