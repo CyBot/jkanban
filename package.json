@@ -27,7 +27,7 @@
     "plugin"
   ],
   "author": "Riccardo Tartaglia",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "dependencies": {
     "dragula": "^3.7.2",
     "npm-watch": "^0.4.0"
